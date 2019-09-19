@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Message;
 use App\User;
 use Illuminate\Http\Request;
@@ -20,9 +21,13 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
-        $message = $request->user()->messages()->create([
+        $user = $request->user();
+
+        $message = $user->messages()->create([
             'message' => $request->input('message')
         ]);
+
+        broadcast(new MessageSent($user, $message))->toOthers();
 
         return ['status' => 'Message Sent!'];
     }
