@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
+                <div class="card-header">Chat</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,7 +14,14 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <messages :messages="messages"></messages>
+                </div>
+
+                <div class="card-footer">
+                    <message-form
+                        v-on:messagesent="addMessage"
+                        :user="{{ Auth::user() }}"
+                    ></message-form>
                 </div>
             </div>
         </div>
